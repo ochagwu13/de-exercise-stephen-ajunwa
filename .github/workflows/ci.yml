@@ -23,7 +23,7 @@ jobs:
       - uses: actions/checkout@v4
         with:
           repository: S64-Capital/data-engineer-exercise-acceptance
-          ssh-key: ${{ secrets.ACCEPTANCE_DEPLOY_KEY }}
+          token: ${{ secrets.ACCEPTANCE_TOKEN }}
           path: acceptance-src
       - uses: actions/setup-node@v4
         with:
