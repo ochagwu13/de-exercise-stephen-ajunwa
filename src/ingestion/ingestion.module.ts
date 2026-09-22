@@ -8,6 +8,7 @@ import { PROCESSED_DATA_WRITER, PROCESSORS } from './ingestion.tokens';
 import { PERSISTENCE_ORDER, ProcessedData } from './processed-data.type';
 import { ProcessedDataWriter } from './processed-data-writer';
 import { BrandsCsvProcessor } from './processors/crm/brands-csv.processor';
+import { CustomersCsvProcessor } from './processors/crm/customers-csv.processor';
 import { FileProcessor } from './file-processor';
 
 @Module({
@@ -15,7 +16,7 @@ import { FileProcessor } from './file-processor';
   providers: [
     {
       provide: PROCESSORS,
-      useFactory: (): FileProcessor[] => [new BrandsCsvProcessor()],
+      useFactory: (): FileProcessor[] => [new BrandsCsvProcessor(), new CustomersCsvProcessor()],
     },
     {
       provide: PROCESSED_DATA_WRITER,

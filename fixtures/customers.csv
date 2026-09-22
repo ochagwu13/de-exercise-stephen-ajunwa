@@ -1,0 +1,7 @@
+CustomerNumber,FirstName,LastName,Email,AccountNumber,CreditLimit,Currency
+C-1001,Amara,Okafor,amara.okafor@example.com,A-2001,5000.00,GBP
+C-1002,Ben,Lindqvist,ben.lindqvist@example.com,A-2002,3500.00,GBP
+C-1003,Chloe,Marchetti,chloe.marchetti@example.com,A-2003,8000.00,GBP
+C-1003,Chloe,Marchetti,chloe.marchetti@example.com,A-2006,25000.00,GBP
+C-1004,Dev,Patel,dev.patel@example.com,A-2004,4000.00,EUR
+C-1005,Elena,Sørensen,elena.sorensen@example.com,A-2005,6000.00,GBP
