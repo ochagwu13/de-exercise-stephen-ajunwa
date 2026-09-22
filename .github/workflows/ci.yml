@@ -1,0 +1,36 @@
+# .github/workflows/ci.yml
+name: ci
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  unit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci
+      - run: npm test
+
+  acceptance:
+    needs: unit
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+        with:
+          repository: S64-Capital/data-engineer-exercise-acceptance
+          token: ${{ secrets.ACCEPTANCE_TOKEN }}
+          path: acceptance-src
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci
+      - run: mkdir -p test/acceptance && cp acceptance-src/acceptance/* test/acceptance/
+      - run: npx jest --config acceptance-src/jest.acceptance.config.js
