@@ -1,0 +1,30 @@
+{
+  "name": "data-engineer-exercise",
+  "version": "1.0.0",
+  "private": true,
+  "description": "S64 data engineer live exercise: credit card company ingestion",
+  "engines": { "node": ">=20" },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "test": "jest",
+    "ingest": "ts-node src/cli/ingest.ts"
+  },
+  "dependencies": {
+    "@nestjs/common": "^11.2.5",
+    "@nestjs/core": "^11.2.5",
+    "better-sqlite3": "^12.11.1",
+    "csv-parse": "^7.0.2",
+    "reflect-metadata": "^0.2.2",
+    "rxjs": "^7.8.2",
+    "typeorm": "^0.3.31"
+  },
+  "devDependencies": {
+    "@nestjs/testing": "^11.2.5",
+    "@types/jest": "^29.5.14",
+    "@types/node": "^22.0.0",
+    "jest": "^29.7.0",
+    "ts-jest": "^29.4.12",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.3"
+  }
+}
