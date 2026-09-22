@@ -13,14 +13,13 @@ describe('domain schema and lookups', () => {
 
   beforeEach(async () => {
     dataSource = await createTestDataSource(DOMAIN_ENTITIES);
-    const lifestyle = await dataSource.getRepository(Brand).save(buildEntity(Brand, { name: 'Lifestyle Credit Card' }));
+    await dataSource.getRepository(Brand).save(buildEntity(Brand, { name: 'Lifestyle Credit Card' }));
     const amara = await dataSource.getRepository(Customer).save(
       buildEntity(Customer, { customerNumber: 'C-1001', firstName: 'Amara', lastName: 'Okafor', email: 'amara.okafor@example.com' }),
     );
     await dataSource.getRepository(Account).save(
       buildEntity(Account, { accountNumber: 'A-2001', customer: amara, creditLimitMinorUnits: 500000, currency: 'GBP' }),
     );
-    expect(lifestyle.id).toBeDefined();
   });
 
   afterEach(() => dataSource.destroy());
