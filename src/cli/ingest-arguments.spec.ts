@@ -19,6 +19,8 @@ describe('parseIngestArguments', () => {
     [['--source', 'crm', '--type', 'cards'], 'a file path is required'],
     [['--source', 'crm', '--type', 'cards', 'a.csv', 'b.csv'], 'exactly one file path is expected'],
     [['--source', 'crm', '--type', 'cards', '--bogus', 'x', 'a.csv'], 'unknown flag --bogus'],
+    [['--source', '--type', 'cards', 'a.csv'], '--source requires a value'],
+    [['--type', 'cards', '--source'], '--source requires a value'],
   ])('rejects %j with "%s"', (argv, message) => {
     expect(() => parseIngestArguments(argv)).toThrow(message);
   });

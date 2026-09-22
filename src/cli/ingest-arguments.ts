@@ -20,7 +20,11 @@ export function parseIngestArguments(argv: string[]): IngestArguments {
       if (!flagName) {
         throw new Error(`unknown flag ${argument}`);
       }
-      flags[flagName] = argv[position + 1];
+      const flagValue = argv[position + 1];
+      if (flagValue === undefined || flagValue.startsWith('--')) {
+        throw new Error(`${argument} requires a value`);
+      }
+      flags[flagName] = flagValue;
       position += 1;
     } else {
       filePaths.push(argument);
