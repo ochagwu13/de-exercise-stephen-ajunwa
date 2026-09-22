@@ -1,5 +1,3 @@
-# Ingest brands, customers, accounts and cards
-
 ## Summary
 
 First three feeds from the business brief:
