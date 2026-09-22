@@ -20,7 +20,7 @@ describe('parseCsvRows', () => {
   });
 
   it('skips empty lines and strips a byte order mark', () => {
-    const csv = Buffer.from('﻿Name\nA\n\nB\n');
+    const csv = Buffer.from('\uFEFFName\nA\n\nB\n');
 
     expect(parseCsvRows(csv)).toEqual([{ Name: 'A' }, { Name: 'B' }]);
   });
