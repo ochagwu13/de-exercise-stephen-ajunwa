@@ -75,7 +75,7 @@ describe('ProcessedDataWriter', () => {
     ];
 
     await expect(writer.write({ shelves: [topShelf], widgets })).rejects.toThrow(
-      'widgets row 2: SqliteError: NOT NULL constraint failed: widget.colour',
+      /^widgets row 2: .*NOT NULL constraint failed: widget\.colour$/,
     );
     expect(await dataSource.getRepository(Shelf).count()).toBe(0);
     expect(await dataSource.getRepository(Widget).count()).toBe(0);
