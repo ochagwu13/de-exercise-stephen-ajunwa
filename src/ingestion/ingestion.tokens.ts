@@ -1,0 +1,2 @@
+export const PROCESSORS = Symbol('PROCESSORS');
+export const PROCESSED_DATA_WRITER = Symbol('PROCESSED_DATA_WRITER');
