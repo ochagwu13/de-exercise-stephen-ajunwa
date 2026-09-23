@@ -18,34 +18,40 @@ export class CustomersCsvProcessor implements FileProcessor {
 
   async process(buffer: Buffer, fileMeta: FileMetadata): Promise<ProcessedData> {
     const customers: Customer[] = [];
-    const accountsByCustomerNumber = new Map<string, Account>();
+    const customersByCustomerNumber = new Map<string, Customer>();
+    const accountNumbers = new Set<string>();
+    const accounts: Account[] = [];
 
     parseCsvRows(buffer).forEach((row, index) => {
-      const existingAccount = accountsByCustomerNumber.get(row.CustomerNumber);
-      if (existingAccount) {
+      if (accountNumbers.has(row.AccountNumber)) {
         throw new FileRejectedError(
           `CustomersCsvProcessor: row ${index + 1} (CustomerNumber ${row.CustomerNumber}, AccountNumber ${row.AccountNumber}): ` +
-            `customer already has account ${existingAccount.accountNumber}`,
+            `duplicate account number ${row.AccountNumber}`,
         );
       }
-      const customer = buildEntity(Customer, {
-        customerNumber: row.CustomerNumber,
-        firstName: row.FirstName,
-        lastName: row.LastName,
-        email: row.Email,
+
+      let customer = customersByCustomerNumber.get(row.CustomerNumber);
+      if (!customer) {
+        customer = buildEntity(Customer, {
+          customerNumber: row.CustomerNumber,
+          firstName: row.FirstName,
+          lastName: row.LastName,
+          email: row.Email,
+        });
+        customersByCustomerNumber.set(row.CustomerNumber, customer);
+        customers.push(customer);
+      }
+
+      const account = buildEntity(Account, {
+        accountNumber: row.AccountNumber,
+        customer,
+        creditLimitMinorUnits: toMinorUnits(row.CreditLimit),
+        currency: row.Currency,
       });
-      customers.push(customer);
-      accountsByCustomerNumber.set(
-        row.CustomerNumber,
-        buildEntity(Account, {
-          accountNumber: row.AccountNumber,
-          customer,
-          creditLimitMinorUnits: toMinorUnits(row.CreditLimit),
-          currency: row.Currency,
-        }),
-      );
+      accounts.push(account);
+      accountNumbers.add(row.AccountNumber);
     });
 
-    return { customers, accounts: [...accountsByCustomerNumber.values()] };
+    return { customers, accounts };
   }
 }
