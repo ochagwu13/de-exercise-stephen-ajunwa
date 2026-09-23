@@ -2,6 +2,8 @@ import fs from 'fs';
 import path from 'path';
 import { DataSource } from 'typeorm';
 
+// Every entity class must be listed here. An entity that is missing gets no table, and any
+// relation pointing at it fails at start-up with "Entity metadata for X#y was not found".
 export const DOMAIN_ENTITIES: Function[] = [];
 
 export const DEV_DATABASE_PATH = path.resolve(__dirname, '../../data/exercise.sqlite');
