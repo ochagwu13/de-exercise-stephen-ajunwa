@@ -1,4 +1,4 @@
-import { Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { Customer } from './customer.entity';
 
 @Entity()
@@ -9,8 +9,7 @@ export class Account {
   @Column({ unique: true })
   accountNumber!: string;
 
-  @OneToOne(() => Customer, { nullable: false })
-  @JoinColumn()
+  @ManyToOne(() => Customer, { nullable: false })
   customer!: Customer;
 
   @Column({ type: 'integer' })

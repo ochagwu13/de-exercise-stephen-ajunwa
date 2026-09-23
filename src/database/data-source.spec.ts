@@ -27,6 +27,6 @@ describe('buildDataSource', () => {
     const dataSource = buildDataSource({ inMemory: false });
 
     expect(dataSource.options.database).toBe(DEV_DATABASE_PATH);
-    expect(DEV_DATABASE_PATH.endsWith('/data/exercise.sqlite')).toBe(true);
+    expect(DEV_DATABASE_PATH.replace(/\\/g, '/').endsWith('/data/exercise.sqlite')).toBe(true);
   });
 });

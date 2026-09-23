@@ -30,11 +30,12 @@ describe('domain schema and lookups', () => {
     expect(tableNames).toEqual(['account', 'brand', 'card', 'customer']);
   });
 
-  it('finds a brand by its exact name', async () => {
+  it('finds the brand by a normalized name', async () => {
     const brands = new TypeOrmBrandLookup(dataSource);
 
     expect((await brands.findByName('Lifestyle Credit Card'))?.name).toBe('Lifestyle Credit Card');
-    expect(await brands.findByName('lifestyle credit card ')).toBeNull();
+    expect((await brands.findByName('lifestyle credit card '))?.name).toBe('Lifestyle Credit Card');
+    expect((await brands.findByName(' LIFESTYLE CREDIT CARD '))?.name).toBe('Lifestyle Credit Card');
   });
 
   it('finds the account for a customer number with the customer loaded', async () => {
@@ -47,13 +48,13 @@ describe('domain schema and lookups', () => {
     expect(await accounts.findByCustomerNumber('C-9999')).toBeNull();
   });
 
-  it('allows one account per customer', async () => {
+  it('allows multiple accounts per customer', async () => {
     const amara = await dataSource.getRepository(Customer).findOneByOrFail({ customerNumber: 'C-1001' });
 
     await expect(
       dataSource
         .getRepository(Account)
         .save(buildEntity(Account, { accountNumber: 'A-2006', customer: amara, creditLimitMinorUnits: 2500000, currency: 'GBP' })),
-    ).rejects.toThrow('UNIQUE constraint failed: account.customerId');
+    ).resolves.toBeDefined();
   });
 });
