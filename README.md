@@ -30,6 +30,45 @@ entity classes on start-up (`synchronize: true`); adding an entity and registeri
 Processors live under `src/ingestion/processors/<source>/`. Each has a unit spec beside it. The
 integration spec in `test/ingestion.spec.ts` runs the real fixtures through the real wiring.
 
+## Data model
+
+```mermaid
+erDiagram
+    CUSTOMER ||--|| ACCOUNT : "holds"
+    ACCOUNT ||--o{ CARD : "carries"
+    BRAND ||--o{ CARD : "brands"
+
+    CUSTOMER {
+        uuid id PK
+        string customerNumber UK
+        string firstName
+        string lastName
+        string email
+    }
+    ACCOUNT {
+        uuid id PK
+        string accountNumber UK
+        uuid customerId FK "unique"
+        integer creditLimitMinorUnits
+        string currency
+    }
+    CARD {
+        uuid id PK
+        string cardNumber UK
+        integer expiryMonth
+        integer expiryYear
+        uuid brandId FK
+        uuid accountId FK
+    }
+    BRAND {
+        uuid id PK
+        string name UK
+    }
+```
+
+Money is stored as integer minor units with the currency in its own column. Card numbers are held
+in full for the exercise; a real system would tokenise them.
+
 ## Session rules
 
 - Use Claude Code or any LLM you like. We do the same. We care that you understand what lands in the repo.
