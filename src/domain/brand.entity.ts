@@ -8,3 +8,4 @@ export class Brand {
   @Column({ unique: true })
   name!: string;
 }
+
